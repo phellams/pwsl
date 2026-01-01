@@ -6,7 +6,13 @@
     "gitlabid": "",
     "gitlabid_public": "77419357",
     "license": "MIT",
-    "iconurl": "https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/pwsl-logo-128x128.png",
+    "iconurl": "https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png",
+    "phwriter": true,
+    "phwriter_source": "https://gitlab.com/phellams/pwsl/-/blob/main/readme.md",
+    "pester_test_files": [
+        ".\\cmdlets\\*.psm1",
+        ".\\*.psm1"
+    ],
     "modulefiles": [
         "pwsl.psm1",
         "pwsl.psd1",
@@ -16,6 +22,8 @@
         "readme.txt"
     ],
     "modulefolders": [
+        "cmdlets",
+        "libs",
         "tools"
     ],
     "moduleexclude": [
