@@ -41,8 +41,8 @@ $phwriter_metadata_array = @(
     @{
         commandinfo = @{
             cmdlet      = "Install-PwslDistro";
-            synopsis    = "Install-PwslDistro [-Name <String>]";
-            description = "Installs a specific WSL distribution from the online list.";
+            synopsis    = "Install-PwslDistro [-Name <String>] [-DefaultUser <String>] [-InstallLocation <String>]";
+            description = "Installs a specific WSL distribution from the online list, -NewLocation is specified, the distro is moved using Move-PwslDistro.";
             source      = ""
         }
         paramtable  = @(
@@ -52,6 +52,30 @@ $phwriter_metadata_array = @(
                 type        = "string"
                 required    = $true
                 description = "The name of the distribution to install (e.g., 'Ubuntu-24.04')."
+                inline      = $false
+            },
+            @{
+                name        = "DefaultUser"
+                param       = "DefaultUser"
+                type        = "string"
+                required    = $false
+                description = "The username to set as default after import (prevents logging in as root)."
+                inline      = $false
+            },
+            @{
+                name        = "InstallLocation"
+                param       = "InstallLocation"
+                type        = "string"
+                required    = $false
+                description = "The directory where the ext4.vhdx disk image will be created."
+                inline      = $false
+            },
+            @{
+                name        = "Help"
+                param       = "Help"
+                type        = "switch"
+                required    = $false
+                description = "Displays this help text."
                 inline      = $false
             }
         )
@@ -63,7 +87,7 @@ $phwriter_metadata_array = @(
     @{
         commandinfo = @{
             cmdlet      = "Move-PwslDistro";
-            synopsis    = "Move-PwslDistro [-Name <String>] [-NewLocation <String>] [-DefaultUser <String>] [-SetAsDefault]";
+            synopsis    = "Move-PwslDistro [-Name <String>] [-DefaultUser <String>] [-NewLocation <String>] [-TempLocation <String>] [-SetAsDefault <switch>]";
             description = "Safely moves a WSL distro to a new drive/folder. Handles stop, export, unregister, import, and user restoration automatically.";
             source      = ""
         }
@@ -77,14 +101,6 @@ $phwriter_metadata_array = @(
                 inline      = $false
             },
             @{
-                name        = "NewLocation"
-                param       = "NewLocation"
-                type        = "string"
-                required    = $true
-                description = "The target directory where the new disk image will be stored."
-                inline      = $false
-            },
-            @{
                 name        = "DefaultUser"
                 param       = "DefaultUser"
                 type        = "string"
@@ -93,17 +109,25 @@ $phwriter_metadata_array = @(
                 inline      = $false
             },
             @{
-                name        = "SetAsDefault"
-                param       = "SetAsDefault"
+                name        = "NewLocation"
+                param       = "NewLocation"
+                type        = "string"
+                required    = $true
+                description = "The target directory where the new disk image will be stored."
+                inline      = $false
+            },
+            @{
+                name        = "Help"
+                param       = "Help"
                 type        = "switch"
                 required    = $false
-                description = "If set, marks this distro as the default WSL instance."
+                description = "Displays this help manual."
                 inline      = $false
             }
         )
         examples    = @(
-            "Move-PwslDistro -Name 'Ubuntu' -NewLocation 'D:\WSL\Ubuntu'",
-            "Move-PwslDistro -Name 'Debian' -NewLocation 'E:\VMs\Debian' -DefaultUser 'dev_user' -SetAsDefault"
+            "Move-PwslDistro -Name 'Ubuntu' -DefaultUser 'dev_user' -NewLocation 'D:\WSL\Ubuntu'",
+            "Move-PwslDistro -Name 'Debian' -DefaultUser 'dev_user' -NewLocation 'E:\VMs\Debian' -TempLocation 'F:\temp' -SetAsDefault"
         )
     },
     @{
