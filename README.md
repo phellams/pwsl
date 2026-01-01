@@ -1,19 +1,34 @@
-# PWSL - PowerShell WSL Manager
+<div align="center">
+    <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png" alt="PWSL Logo">
+    <h1><strong>PWSL</strong></h1>
+     <small>Powershell Windows Subsystem for Linux</small>
+    <hr>
+    <p>A wrapper for <code>wsl.exe</code>. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.</p>
+    <small>Available on <strong>MacOS</strong>, <strong>Linux</strong>, and <strong>Windows</strong></small>
+    <span>
+        <h5>
+            <a href="https://gitlab.com/phellams/pwsl">Website</a> |
+            <a href="https://gitlab.com/phellams/pwsl#Core Features">Features</a> | 
+            <a href="https://github.com/phellams/pwsl">GitHub</a> |
+            <a href="https://www.powershellgallery.com/packages/PWSL">PSGallery</a> |
+            <a href="https://chocolatey.org/packages/pwsl">Chocolatey</a>
+        </h5>
+    </span>
+    <hr>
+</div>
 
-A wrapper for `wsl.exe`. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.
 
-## Installation
+## **Installation**
 
 1. Save the module code as `pwsl.psm1`.
 2. Import the module in your session or profile:
 
 ```powershell
 Import-Module .\pwsl.psm1
-
 ```
 > **Note:** This module requires Windows 10/11 with WSL enabled.
 
-## Core Features
+## **Core Features**
 
 ### 1. Object-Oriented Output
 
@@ -59,7 +74,7 @@ echo -e "[user]\ndefault=your_username" >> /etc/wsl.conf
 
 The module registers a tab-completer. You can press `[TAB]` to cycle through installed distro names for commands like `Stop-`, `Move-`, or `Enter-`.
 
-## Command Reference
+## **Command Reference**
 
 ### General
 
@@ -77,7 +92,7 @@ The module registers a tab-completer. You can press `[TAB]` to cycle through ins
 | `Install-PwslDistro`    | Installs a new distro from the online list.           |
 | `Stop-PwslDistro`       | Terminates a running instance immediately.            |
 | `Register-PwslDistro`   | Alias for Import. Registers a custom rootfs.          |
-| `Unregister-PwslDistro` | **Destructive**. Deletes the distro and virtual disk. |
+| `Unregister-PwslDistro` | ⚠️ **Destructive**. Deletes the distro and virtual disk. |
 
 ### Migration / Backup
 
@@ -87,7 +102,7 @@ The module registers a tab-completer. You can press `[TAB]` to cycle through ins
 | `Export-PwslDistro` | Exports rootfs to a `.tar` file.       |
 | `Import-PwslDistro` | Imports a `.tar` file as a new distro. |
 
-## Examples
+## **Examples**
 
 **Install and Setup**
 
@@ -98,9 +113,13 @@ Get-PwslAvailable
 # Install
 Install-PwslDistro -Name "Debian"
 
+# install in a specific location
+# Note: Move-Pwsldistro will be called to perform move steps and will take addtional time
+# Note: Default user must be the same as the one you specify during intereactive installation
+Install-PwslDistro -Name "Debian" -InstallLocation "C:\WSL\Debian"
 ```
 
-**Backup Work**
+**Backup and res**
 
 ```powershell
 # Create a snapshot
@@ -108,5 +127,30 @@ Export-PwslDistro -Name "Debian" -Path "C:\Backups\debian-snap.tar"
 
 # Restore as a separate instance for testing
 Import-PwslDistro -Name "Debian-Test" -InstallLocation "C:\WSL\Test" -SourceTar "C:\Backups\debian-snap.tar"
-
 ```
+
+**Relocation**
+
+```powershell
+# Move to a different drive
+Get-PwslList
+
+# Default temp location is C:\Users\gsnow\AppData\Local\Temp
+Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -defaultUser "username"
+
+# custom temp location
+Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -TempLocation "G:\Backups" -defaultUser "username"
+```
+
+## **Roadmap**
+
+## **Contribute**
+
+## **Acknowledgments**
+
+ - WSL2: [**@wsl**](https://learn.microsoft.com/en-us/windows/wsl/about) - Windows Subsystem for Linux (WSL) lets developers run a GNU/Linux environment inside a Windows environment.
+ - Shields\.io: [**@shields.io**](https://shields.io/) - Shields.io provides a service to generate badges and other visual elements for your projects.
+
+## License
+
+This module is released under the [MIT License](https://github.com/gsnow/pwsl/blob/main/LICENSE).
