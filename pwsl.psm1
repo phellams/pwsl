@@ -6,6 +6,15 @@
     and managing WSL distributions using standard WSL.exe commands.
 #>
 
+using module libs\phwriter\phwriter.psm1
+
+# -----------------------------------------------------------------------------
+# GLOBALS
+# -----------------------------------------------------------------------------
+
+$global:__pwsl = @{
+    rootpath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+}
 # -----------------------------------------------------------------------------
 # INTERNAL HELPER: ANSI Logging
 # -----------------------------------------------------------------------------
@@ -92,14 +101,32 @@ function Enter-PwslDistro {
     <#
     .SYNOPSIS
         Enters the distro shell (Wrapper for wsl -d).
+    .DESCRIPTION
+        Enters the distro shell (Wrapper for wsl -d).
+    .PARAMETER Name
+        The name of the distro to enter.
+    .PARAMETER User
+        The user to enter the distro as.
+    .PARAMETER help
+        Show help
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true, position=0)]
+        [Parameter(Mandatory=$true, position=0, ParameterSetName='NormalOperation')]
         [string]$Name,
-        
-        [string]$User
+
+        [Parameter(Mandatory=$false, ParameterSetName='NormalOperation')]
+        [string]$User,
+
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
+
     )
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\enter-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     if (-not [string]::IsNullOrWhiteSpace($User)) {
         wsl -d $Name -u $User
@@ -132,8 +159,17 @@ function Get-PwslList {
     .SYNOPSIS
         Lists all installed distros using Regex parsing.
     #>
-    [CmdletBinding()]
-    param()
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
+    param(
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
+    )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\get-pwsllist_phwriter_metadata.json"
+        return;
+    }
 
     Write-PwslLog "Fetching installed distribution list..." "Info"
 
