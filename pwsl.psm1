@@ -89,17 +89,25 @@ function Get-PwslList {
 
     $distros = @()
     
-    # parsing logic: skip header, split by whitespace
+    # parsing logic: skip header, trim, parse asterisk manually
     $rawOutput | Select-Object -Skip 1 | ForEach-Object {
+        # 1. Trim leading/trailing whitespace to handle indentation quirks
         $line = $_.Trim()
+        
         if (-not [string]::IsNullOrWhiteSpace($line)) {
-            # Handle the asterisk for default distro
-            $isDefault = $line -match "^\*"
-            $cleanLine = $line -replace "^\*\s*", ""
+            $isDefault = $false
             
-            # Split by multiple spaces
-            $parts = $cleanLine -split '\s+'
+            # 2. explicit check for the asterisk at the start of the trimmed line
+            if ($line.StartsWith("*")) {
+                $isDefault = $true
+                # Remove the asterisk and trim again to get clean text
+                $line = $line.Substring(1).Trim()
+            }
             
+            # 3. Split by whitespace
+            $parts = $line -split '\s+'
+            
+            # Ensure we have at least Name, State, Version
             if ($parts.Count -ge 3) {
                 $distros += [PSCustomObject]@{
                     Name      = $parts[0]
@@ -358,5 +366,24 @@ function Move-PwslDistro {
     Write-PwslLog "Move complete!" "Success"
 }
 
+# =========================================|
+# EXPORT MODULE MEMBERS ===================|
+# =========================================|
+$module_config = @{
+    function = @(
+        'Get-PwslList',
+        'Get-PwslRunning',
+        'Get-PwslAvailable',
+        'Install-PwslDistro',
+        'Move-PwslDistro',
+        'Export-PwslDistro',
+        'Import-PwslDistro',
+        'Register-PwslDistro',
+        'Unregister-PwslDistro',
+        'Stop-PwslDistro'
+    )
+    alias = @()
+}
+
 # Exporting Functions
-Export-ModuleMember -Function Get-PwslList, Get-PwslRunning, Get-PwslAvailable, Install-PwslDistro, Move-PwslDistro, Export-PwslDistro, Import-PwslDistro, Register-PwslDistro, Unregister-PwslDistro, Stop-PwslDistro
+Export-ModuleMember @module_config
