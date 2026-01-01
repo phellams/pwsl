@@ -25,7 +25,7 @@
     PrivateData        = @{
         PSData = @{
             Tags                     = @('wsl', 'linux', 'distro', 'virtualization', 'windows', 'subsystem', 'subsystem for linux', 'wsl2')
-            ReleaseNotes             = @{
+            ReleaseNotes             = @{ 
                 # '1.2.1' = 'Initial release with New-PHWriter cmdlet for custom help formatting and enhanced layout.'
             }
             RequireLicenseAcceptance = $false
@@ -33,6 +33,7 @@
             ProjectUri               = 'https://gitlab.com/phellams/pwsl.git'
             IconUri                  = 'https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-logo-128x128.png'
             # CHOCOLATE ---------------------
+            ChocoDescription         = 'A wrapper for `wsl.exe`. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.'
             LicenseUrl               = 'https://choosealicense.com/licenses/mit'
             ProjectUrl               = 'https://github.com/phellams/pwsl'
             IconUrl                  = 'https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/pwsl-logo-128x128.png'
