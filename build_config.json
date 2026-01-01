@@ -10,7 +10,6 @@
     "phwriter": true,
     "phwriter_source": "https://gitlab.com/phellams/pwsl/-/blob/main/readme.md",
     "pester_test_files": [
-        ".\\cmdlets\\*.psm1",
         ".\\*.psm1"
     ],
     "modulefiles": [
@@ -23,8 +22,7 @@
     ],
     "modulefolders": [
         "cmdlets",
-        "libs",
-        "tools"
+        "libs"
     ],
     "moduleexclude": [
         "commit-helper.ps1"
