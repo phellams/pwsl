@@ -1,0 +1,24 @@
+{
+    "modulename": "pwsl",
+    "releasetype": "public",
+    "gituser": "sgkens",
+    "gitgroup": "phellams",
+    "gitlabid": "",
+    "gitlabid_public": "77419357",
+    "license": "MIT",
+    "iconurl": "https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/pwsl-logo-128x128.png",
+    "modulefiles": [
+        "pwsl.psm1",
+        "pwsl.psd1",
+        "LICENSE",
+        "icon.png",
+        "readme.md",
+        "readme.txt"
+    ],
+    "modulefolders": [
+        "tools"
+    ],
+    "moduleexclude": [
+        "commit-helper.ps1"
+    ]
+}
