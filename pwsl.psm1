@@ -210,8 +210,17 @@ function Get-PwslRunning {
     .SYNOPSIS
         Lists only the currently running distributions.
     #>
-    [CmdletBinding()]
-    param()
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
+    param(
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
+    )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\get-pwslrunning_phwriter_metadata.json"
+        return;
+    }
 
     $all = Get-PwslList
     return $all | Where-Object { $_.State -eq 'Running' }
@@ -222,8 +231,18 @@ function Get-PwslAvailable {
     .SYNOPSIS
         Lists distros available for download online.
     #>
-    [CmdletBinding()]
-    param()
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
+    param(
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
+    )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\get-pwslavailable_phwriter_metadata.json"
+        return;
+    }
+
 
     Write-PwslLog "Fetching online distribution list..." "Info"
     wsl --list --online
@@ -234,14 +253,19 @@ function Install-PwslDistro {
     .SYNOPSIS
         Installs a specific distribution.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
-        [parameter(Mandatory=$false)]
+
+        [parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=1)]
+        [string]$DefaultUser,
+
+        [parameter(Mandatory = $false, ParameterSetName = 'NormalOperation', Position=2)]
         [string]$InstallLocation,
-        [parameter(Mandatory=$true)]
-        [string]$DefaultUser
+
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
     # scope script colors
     $green = $script:colorpallet.green
@@ -249,6 +273,12 @@ function Install-PwslDistro {
     $gray = $script:colorpallet.gray
     $reset = $script:colorpallet.reset
     # --
+    
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\install-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     if(!$InstallLocation){
         Write-PwslLog "Preparing to install $green$Name$reset..." "Info"
@@ -288,11 +318,19 @@ function Stop-PwslDistro {
     .SYNOPSIS
         Terminates a running distribution.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
-        [string]$Name
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation')]
+        [string]$Name,
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\stop-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     Write-PwslLog "Terminating $Name..." "Info"
     wsl --terminate $Name
@@ -308,14 +346,23 @@ function Export-PwslDistro {
     .SYNOPSIS
         Exports a distro to a .tar file.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
 
-        [Parameter(Mandatory=$true)]
-        [string]$Path
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=1)]
+        [string]$Path,
+
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\export-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     if (-not (Test-Path $Path) -and -not (Test-Path (Split-Path $Path))) {
         Write-PwslLog "Destination directory does not exist." "Error"
@@ -337,13 +384,21 @@ function Unregister-PwslDistro {
     .SYNOPSIS
         Unregisters (Deletes) a distribution and its disk image.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
-
-        [switch]$Force
+        [Parameter(Mandatory=$false, ParameterSetName='NormalOperation')]
+        [switch]$Force,
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
+
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\unregister-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     if (-not $Force) {
         $confirm = Read-Host "Are you sure you want to DELETE $Name and all its data? (y/n)"
@@ -360,15 +415,15 @@ function Import-PwslDistro {
     .SYNOPSIS
         Imports a .tar file as a new distribution.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=1)]
         [string]$InstallLocation,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=2)]
         [string]$SourceTar
     )
 
@@ -398,12 +453,27 @@ function Register-PwslDistro {
     .SYNOPSIS
         Alias for Import-PwslDistro.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
+
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=1)]
         [string]$InstallLocation,
-        [string]$SourceTar
+
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=2)]
+        [string]$SourceTar,
+
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
+    
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\register-pwsldistro_phwriter_metadata.json"
+        return;
+    }
+
     Import-PwslDistro -Name $Name -InstallLocation $InstallLocation -SourceTar $SourceTar
 }
 
@@ -412,22 +482,32 @@ function Move-PwslDistro {
     .SYNOPSIS
         Moves a WSL distro safely and restores the default user.
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'NormalOperation')]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=0)]
         [string]$Name,
 
-        [Parameter(Mandatory=$true)]
-        [string]$NewLocation,
-
-        [string]$TempLocation, # Temp location defaults to C:\Users\gsnow\AppData\Local\Temp
-        [parameter(mandatory=$true)]
+        [parameter(mandatory = $true, ParameterSetName = 'NormalOperation', Position = 1)]
         [string]$DefaultUser, # NEW: Allow user to specify username
 
-        [switch]$SetAsDefault
+        [Parameter(Mandatory=$true, ParameterSetName='NormalOperation', Position=2)]
+        [string]$NewLocation,
+
+        [Parameter(Mandatory=$false, ParameterSetName='NormalOperation', Position=3)]
+        [string]$TempLocation,
+
+        [Parameter(Mandatory=$false, ParameterSetName='NormalOperation', Position=4)]
+        [switch]$SetAsDefault,
+
+        [Parameter(Mandatory=$false, ParameterSetName='ShowHelp')]
+        [switch]$help
     )
 
-
+    # help context switch
+    if ($PSCmdlet.ParameterSetName -eq 'ShowHelp') {
+        New-PHWriter -JsonFile "$($global:__pwsl.rootpath)\libs\help_metadata\move-pwsldistro_phwriter_metadata.json"
+        return;
+    }
 
     # 1. Validation
     $installed = Get-PwslList
