@@ -98,14 +98,6 @@ psmpacker_build:
   needs:
     - job: pester
       artifacts: false
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - "docs/**/*"
-        - "**/*.md"
-      when: never
   script:
     - |
       pwsh -c ./automator-devops/scripts/build/build-module.ps1 || exit 1
@@ -116,7 +108,7 @@ analyzer:
     - job: psmpacker_build
       artifacts: true
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
       when: on_success
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
       changes:
@@ -135,18 +127,12 @@ nupsforge_general_nuget_package:
       artifacts: true
     - job: analyzer
       artifacts: false
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - "docs/**/*"
-        - "**/*.md"
-      when: never
-  
   script:
     - |
       pwsh -c ./automator-devops/scripts/build/build-package-generic-nuget.ps1 || exit 1
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
+      when: always
 
 nupsforge_chocolatey_nupsec_file:
   stage: build
@@ -155,17 +141,12 @@ nupsforge_chocolatey_nupsec_file:
       artifacts: true
     - job: analyzer
       artifacts: false
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - "docs/**/*"
-        - "**/*.md"
-      when: never
   script:
     - |
       pwsh -c ./automator-devops/scripts/build/build-nuspec-choco.ps1 || exit 1
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
+      when: always
 
 mono_chocolatey_package:
   stage: build
@@ -179,14 +160,6 @@ mono_chocolatey_package:
       artifacts: true
     - job: analyzer
       artifacts: false
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - "docs/**/*"
-        - "**/*.md"
-      when: never
   before_script:
     - |
       echo "Install git cli"
@@ -197,6 +170,9 @@ mono_chocolatey_package:
     - |
       chmod +x ./automator-devops/scripts/build/build-package-choco.sh || exit 1
       ./automator-devops/scripts/build/build-package-choco.sh || exit 1
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
+      when: always
 
 zip_build:
   stage: build
@@ -205,17 +181,12 @@ zip_build:
       artifacts: true
     - job: analyzer
       artifacts: false
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
-      changes:
-        - "docs/**/*"
-        - "**/*.md"
-      when: never
   script:
     - |
       pwsh -c ./automator-devops/scripts/build/build-package-psgallery.ps1 || exit 1
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
+      when: always
 
 #---------------------------------------------
 # ! || Release Stage ||
