@@ -1,36 +1,59 @@
 <div align="center">
     <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png" alt="PWSL Logo">
     <h1><strong>PWSL</strong></h1>
-     <small>Powershell Windows Subsystem for Linux</small>
+    <p><b>PowerShell Windows Subsystem for Linux</b></p>
     <hr>
     <p>A wrapper for <code>wsl.exe</code>. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.</p>
-    <small>Available on <strong>MacOS</strong>, <strong>Linux</strong>, and <strong>Windows</strong></small>
+    <p>🚨 <strong>Requirement:</strong> Windows 10/11 with WSL enabled.</p>
+    <br>
     <span>
-        <h5>
-            <a href="https://gitlab.com/phellams/pwsl">Website</a> |
-            <a href="https://gitlab.com/phellams/pwsl#Core Features">Features</a> | 
-            <a href="https://github.com/phellams/pwsl">GitHub</a> |
-            <a href="https://www.powershellgallery.com/packages/PWSL">PSGallery</a> |
-            <a href="https://chocolatey.org/packages/pwsl">Chocolatey</a>
-        </h5>
+        <a href="https://gitlab.com/phellams/pwsl">Website</a> |
+        <a href="https://gitlab.com/phellams/pwsl#Core Features">Features</a> | 
+        <a href="https://github.com/phellams/pwsl">GitHub</a> |
+        <a href="https://gitlab.com/phellams/pwsl">GitLab</a> |
+        <a href="https://www.powershellgallery.com/packages/PWSL">PSGallery</a> |
+        <a href="https://chocolatey.org/packages/pwsl">Chocolatey</a>
     </span>
     <hr>
 </div>
 
-
 ## **Installation**
 
-1. Save the module code as `pwsl.psm1`.
-2. Import the module in your session or profile:
+Installing **pwsl** is available via the package repositories: ***PSGallery***, ***Chocolatey*** and ***GitLab***.
 
-```powershell
-Import-Module .\pwsl.psm1
+|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|
+|-|-|-|
+| 📦 PSGallery  | <a href="https://www.powershellgallery.com/packages/pwsl"> <img src="https://img.shields.io/powershellgallery/v/pwsl?label=version&style=flat-square&logoColor=blue&labelColor=23CD5C5C&color=%231E3D59" alt="powershellgallery"></a>       | <img src="https://img.shields.io/powershellgallery/dt/pwsl?style=flat-square&logoColor=blue&label=downloads&labelColor=23CD5C5C&color=%231E3D59" alt="powershellgallery-downloads">       |
+| 📦 Chocolatey | <a href="https://community.chocolatey.org/packages/pwsl/"><img src="https://img.shields.io/chocolatey/v/pwsl?label=version&include_prereleases&style=flat-square&logoColor=blue&labelColor=23CD5C5C&color=%231E3D59" alt="chocolatey"/></a> | <img src="https://img.shields.io/chocolatey/dt/pwsl?style=flat-square&logoColor=blue&label=downloads&include_prereleases&labelColor=23CD5C5C&color=%231E3D59" alt="chocolatey-downloads"> |
+
+***Additinonal Installation Options:***
+ 
+|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|
+|-|-|-|
+| 💼 Releases/Tags | <a href="https://gitlab.com/phellams/pwsl/-/releases"> <img src="https://img.shields.io/gitlab/v/release/phellams%2Fpwsl?include_prereleases&style=flat-square&logoColor=%2300B2A9&labelColor=%23CD5C5C&color=%231E3D59" alt="gitlab-release"></a> | <a href="https://gitlab.com/phellams/pwsl/-/tags"> <img src="https://img.shields.io/gitlab/v/tag/phellams%2Fpwsl?include_prereleases&style=flat-square&logoColor=%&labelColor=%23CD5C5C&color=%231E3D59" alt="gitlab tags"></a> |
+
+#### *GitLab Packages*
+
+Using `nuget`: See the [**packages**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=name&sort=asc&search[]=pwsl&type=NuGet) page for installation instructions.
+
+> For instructions on adding `nuget sources` packages from **GitLab** see [**Releases**](https://github.com/sgkens/pwsl/releases) artifacts or via the [**Packages**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=name&sort=asc&search[]=pwsl&type=NuGet) page.
+
+#### *Generic Package Registry*
+
+The latest release artifacts can be downloaded from the [**Generic Assets Artifacts**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=type&sort=desc&type=Generic) page.
+
+#### *Git*
+
+```bash
+# Clone the repository
+git clone https://gitlab.com/phellams/pwsl.git
+cd pwsl
+import-module .\
 ```
-> **Note:** This module requires Windows 10/11 with WSL enabled.
 
 ## **Core Features**
 
-### 1. Object-Oriented Output
+### 🔸 Object-Oriented Output
 
 Standard `wsl --list` returns raw text (often with encoding issues). `PWSL` returns PowerShell objects.
 
@@ -40,7 +63,7 @@ $distros | Where-Object { $_.State -eq 'Running' }
 
 ```
 
-### 2. Moving Distributions
+### 🔸 Moving Distributions
 
 `Move-PwslDistro` automates the manual Export -> Unregister -> Import workflow.
 
@@ -58,7 +81,7 @@ Move-PwslDistro -Name "Ubuntu-24.04" -NewLocation "D:\WSL\Ubuntu" -SetAsDefault
 
 ```
 
-### ⚠️ Important: Moving & Users
+### 🔸⚠️ Important: Moving & Users
 
 When a distro is imported, WSL defaults the user to `root`. This script attempts to ask for your username and write it to `/etc/wsl.conf` automatically. If this fails, you will log in as root.
 
@@ -70,7 +93,7 @@ echo -e "[user]\ndefault=your_username" >> /etc/wsl.conf
 
 ```
 
-### 3. Argument Completion
+### 🔸 Argument Completion
 
 The module registers a tab-completer. You can press `[TAB]` to cycle through installed distro names for commands like `Stop-`, `Move-`, or `Enter-`.
 
@@ -143,6 +166,10 @@ Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -TempLocation "G:\Ba
 ```
 
 ## **Roadmap**
+
+ - [ ] The ability to enable and disble wsl via powershell
+ - [ ] The ability to list distro versions and perhaps install previous version if the need is there
+ - [ ] complete phwriter help metadata for accurate help output
 
 ## **Contribute**
 
