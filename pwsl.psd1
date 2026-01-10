@@ -1,6 +1,6 @@
 @{
     RootModule         = 'pwsl.psm1'
-    ModuleVersion      = '0.2.5'
+    ModuleVersion      = '0.2.6'
     GUID               = '019b7754-6848-7a25-a4b3-2d847a419841'
     Author             = 'Garvey k. Snow'
     CompanyName        = 'Phellams'
@@ -24,7 +24,7 @@
     AliasesToExport    = @()
     PrivateData        = @{
         PSData = @{
-            Tags                     = @('PSModule','wsl', 'linux', 'distro', 'virtualization', 'windows', 'subsystem', 'subsystem for linux', 'wsl2')
+            Tags                     = @('PSModule','wsl', 'windows', 'linux', 'virtualization', 'subsystem', 'wsl2')
             ReleaseNotes             = @{ 
                 # '1.2.1' = 'Initial release with New-PHWriter cmdlet for custom help formatting and enhanced layout.'
             }
