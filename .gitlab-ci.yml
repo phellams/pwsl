@@ -46,16 +46,10 @@ workflow:
 .build_template: &build_template
   stage: deploy
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE != "merge_request_event"'
       when: always
     - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
       when: always
-
-.deploy_template: &deploy_template
-  stage: deploy
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
-      when: on_success
 
 .release_template: &release_template
   stage: release
@@ -63,6 +57,18 @@ workflow:
     - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
       when: on_success
 
+.deploy_template: &deploy_template
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+.*$/
+      when: on_success
+
+.deploy_template_choco: &deploy_template_choco
+  stage: deploy
+  image: docker.io/chocolatey/choco:v2.5.1
+  tags:
+    - docker
+  when: manual
 
 # ____________________________________________________________
 # ########|----> |||| Test Stage |||| <----###################
@@ -299,8 +305,7 @@ upload_psgallery:
       pwsh -c ./automator-devops/scripts/deploy/deploy-psgallary.ps1 || exit 1
 
 upload_chocolatey:
-  <<: *deploy_template
-  image: docker.io/chocolatey/choco:v2.5.1
+  <<: *deploy_template_choco
   needs:
     - job: psmpacker_build
       artifacts: true
@@ -310,8 +315,6 @@ upload_chocolatey:
       artifacts: false
     - job: upload_psgallery
       artifacts: false
-  tags:
-    - docker
   before_script:
     - |
       echo "Install git cli"
