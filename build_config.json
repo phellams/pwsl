@@ -8,7 +8,7 @@
     "license": "MIT",
     "iconurl": "https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png",
     "phwriter": true,
-    "phwriter_source": "https://gitlab.com/phellams/pwsl/-/blob/main/readme.md",
+    "phwriter_source": "https://gitlab.com/phellams/#function-reference",
     "pester_test_files": [
         ".\\*.psm1"
     ],
