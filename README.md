@@ -1,93 +1,216 @@
-# pwsl
+<div align="center">
+    <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png" alt="PWSL Logo">
+    <h1><strong>PWSL</strong></h1>
+    <p><b>PowerShell Windows Subsystem for Linux</b></p>
+    <hr>
+    <p>A wrapper for <code>wsl.exe</code>. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.</p>
+    <p>🚨 <strong>Requirement:</strong> Windows 10/11 with WSL enabled.</p>
+    <br>
+    <span>
+        <a href="https://gitlab.com/phellams/pwsl">Website</a> |
+        <a href="https://gitlab.com/phellams/pwsl#Core Features">Features</a> | 
+        <a href="https://github.com/phellams/pwsl">GitHub</a> |
+        <a href="https://gitlab.com/phellams/pwsl">GitLab</a> |
+        <a href="https://www.powershellgallery.com/packages/PWSL">PSGallery</a> |
+        <a href="https://chocolatey.org/packages/pwsl">Chocolatey</a>
+    </span>
+    <hr>
+</div>
 
+## **Installation**
 
+Installing **pwsl** is available via the package repositories: ***PSGallery***, ***Chocolatey*** and ***GitLab***.
 
-## Getting started
+|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|
+|-|-|-|
+| 📦 PSGallery  | <a href="https://www.powershellgallery.com/packages/pwsl"> <img src="https://img.shields.io/powershellgallery/v/pwsl?label=version&style=flat-square&logoColor=blue&labelColor=23CD5C5C&color=%231E3D59" alt="powershellgallery"></a>       | <img src="https://img.shields.io/powershellgallery/dt/pwsl?style=flat-square&logoColor=blue&label=downloads&labelColor=23CD5C5C&color=%231E3D59" alt="powershellgallery-downloads">       |
+| 📦 Chocolatey | <a href="https://community.chocolatey.org/packages/pwsl/"><img src="https://img.shields.io/chocolatey/v/pwsl?label=version&include_prereleases&style=flat-square&logoColor=blue&labelColor=23CD5C5C&color=%231E3D59" alt="chocolatey"/></a> | <img src="https://img.shields.io/chocolatey/dt/pwsl?style=flat-square&logoColor=blue&label=downloads&include_prereleases&labelColor=23CD5C5C&color=%231E3D59" alt="chocolatey-downloads"> |
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+***Additinonal Installation Options:***
+ 
+|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|▓▓▓▓▒▒▒▒░░░|
+|-|-|-|
+| 💼 Releases/Tags | <a href="https://gitlab.com/phellams/pwsl/-/releases"> <img src="https://img.shields.io/gitlab/v/release/phellams%2Fpwsl?include_prereleases&style=flat-square&logoColor=%2300B2A9&labelColor=%23CD5C5C&color=%231E3D59" alt="gitlab-release"></a> | <a href="https://gitlab.com/phellams/pwsl/-/tags"> <img src="https://img.shields.io/gitlab/v/tag/phellams%2Fpwsl?include_prereleases&style=flat-square&logoColor=%&labelColor=%23CD5C5C&color=%231E3D59" alt="gitlab tags"></a> |
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+#### *GitLab Packages*
 
-## Add your files
+Using `nuget`: See the [**packages**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=name&sort=asc&search[]=pwsl&type=NuGet) page for installation instructions.
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+> For instructions on adding `nuget sources` packages from **GitLab** see [**Releases**](https://github.com/sgkens/pwsl/releases) artifacts or via the [**Packages**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=name&sort=asc&search[]=pwsl&type=NuGet) page.
+
+#### *Generic Package Registry*
+
+The latest release artifacts can be downloaded from the [**Generic Assets Artifacts**](https://gitlab.com/phellams/pwsl/-/packages?orderBy=type&sort=desc&type=Generic) page.
+
+#### *Git*
+
+```bash
+# Clone the repository
+git clone https://gitlab.com/phellams/pwsl.git
+cd pwsl
+import-module .\
+```
+
+## **Core Features**
+
+### 🔸 Object-Oriented Output
+
+Standard `wsl --list` returns raw text (often with encoding issues). `PWSL` returns PowerShell objects.
+
+```powershell
+$distros = Get-PwslList
+$distros | Where-Object { $_.State -eq 'Running' }
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/phellams/pwsl.git
-git branch -M main
-git push -uf origin main
+
+### 🔸 Moving Distributions
+
+`Move-PwslDistro` automates the manual Export -> Unregister -> Import workflow.
+
+**Logic Handled:**
+
+1. **Stops** the running distro.
+2. **Exports** to a temporary location (with file size safety checks).
+3. **Unregisters** (deletes) the original only if the backup is valid.
+4. **Imports** to the new destination.
+5. **Restores Default User:** Injects `/etc/wsl.conf` so you don't log in as `root` by default.
+
+```powershell
+# Move Ubuntu to D: drive and set as default
+Move-PwslDistro -Name "Ubuntu-24.04" -NewLocation "D:\WSL\Ubuntu" -SetAsDefault
+
 ```
 
-## Integrate with your tools
+### 🔸⚠️ Important: Moving & Users
 
-* [Set up project integrations](https://gitlab.com/phellams/pwsl/-/settings/integrations)
+When a distro is imported, WSL defaults the user to `root`. This script attempts to ask for your username and write it to `/etc/wsl.conf` automatically. If this fails, you will log in as root.
 
-## Collaborate with your team
+To fix manually inside the distro:
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```bash
+# Inside WSL
+echo -e "[user]\ndefault=your_username" >> /etc/wsl.conf
 
-## Test and Deploy
+```
 
-Use the built-in continuous integration in GitLab.
+### 🔸 Argument Completion
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+The module registers a tab-completer. You can press `[TAB]` to cycle through installed distro names for commands like `Stop-`, `Move-`, or `Enter-`.
 
-***
+## **Command Reference**
 
-# Editing this README
+### General
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+| Command             | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `Get-PwslList`      | Returns object list of installed distros (Name, State, Version). |
+| `Get-PwslRunning`   | Returns only running distros.                                    |
+| `Get-PwslAvailable` | Lists distros available for download (`wsl --list --online`).    |
+| `Enter-PwslDistro`  | Enters the shell of a specific distro (`wsl -d`).                |
 
-## Suggestions for a good README
+### Lifecycle
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+| Command                 | Description                                           |
+| ----------------------- | ----------------------------------------------------- |
+| `Install-PwslDistro`    | Installs a new distro from the online list.           |
+| `Stop-PwslDistro`       | Terminates a running instance immediately.            |
+| `Register-PwslDistro`   | Alias for Import. Registers a custom rootfs.          |
+| `Unregister-PwslDistro` | ⚠️ **Destructive**. Deletes the distro and virtual disk. |
 
-## Name
-Choose a self-explaining name for your project.
+### Migration / Backup
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+| Command             | Description                            |
+| ------------------- | -------------------------------------- |
+| `Move-PwslDistro`   | Safely moves a distro to a new path.   |
+| `Export-PwslDistro` | Exports rootfs to a `.tar` file.       |
+| `Import-PwslDistro` | Imports a `.tar` file as a new distro. |
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## **Examples**
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+**Install and Setup**
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```powershell
+# Check what is available
+Get-PwslAvailable
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+# Install
+Install-PwslDistro -Name "Debian"
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+# install in a specific location
+# Note: Move-Pwsldistro will be called to perform move steps and will take addtional time
+# Note: Default user must be the same as the one you specify during intereactive installation
+Install-PwslDistro -Name "Debian" -InstallLocation "C:\WSL\Debian"
+```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+**Backup and res**
+
+```powershell
+# Create a snapshot
+Export-PwslDistro -Name "Debian" -Path "C:\Backups\debian-snap.tar"
+
+# Restore as a separate instance for testing
+Import-PwslDistro -Name "Debian-Test" -InstallLocation "C:\WSL\Test" -SourceTar "C:\Backups\debian-snap.tar"
+```
+
+**Relocation**
+
+```powershell
+# Move to a different drive
+Get-PwslList
+
+# Default temp location is C:\Users\gsnow\AppData\Local\Temp
+Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -defaultUser "username"
+
+# custom temp location
+Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -TempLocation "G:\Backups" -defaultUser "username"
+```
+
+## **Roadmap**
+
+ - [ ] The ability to enable and disble wsl via powershell
+ - [ ] The ability to list distro versions and perhaps install previous version if the need is there
+ - [ ] complete phwriter help metadata for accurate help output
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Contributions are welcome! Please fork the repository and submit a **Merge Request** (MR) targeting the `develop` branch.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+1. **Fork the Project**
+   Click the "Fork" button in the top right corner of the repository page.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+2. **Clone your Fork**
+   ```bash
+   git clone [https://gitlab.com/YOUR_USERNAME/pwsl.git](https://gitlab.com/YOUR_USERNAME/pwsl.git)
+   cd pwslmerge_requests/new)
+   ```
+
+3. Create a Feature Branch Ensure you base your work on the develop branch:
+   ```bash
+   git switch develop
+   git switch -c feature/AmazingFeature
+   ```
+
+4. Commit your Changes
+   ```bash
+   git commit -m 'feat: Add some AmazingFeature'
+   ```
+
+5. Push to the Branch
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+
+6. Open a Merge Request
+
+   <a href="https://gitlab.com/phellams/pwsl/-/merge_requests/new"><img src="https://img.shields.io/badge/Open_Merge_Request-GitLab-orange?style=flat-square&logo=gitlab"></a>
+   > https://gitlab.com/phellams/pwsl/-/merge_requests/new
+
+
+## **Acknowledgments**
+
+ - [**@wsl**](https://learn.microsoft.com/en-us/windows/wsl/about) - Windows Subsystem for Linux (WSL) lets developers run a GNU/Linux environment inside a Windows environment.
+ - [**@shields.io**](https://shields.io/) - Shields.io provides a service to generate badges and other visual elements for your projects.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This module is released under the [MIT License](https://github.com/gsnow/pwsl/blob/main/LICENSE).
