@@ -24,7 +24,7 @@
     AliasesToExport    = @()
     PrivateData        = @{
         PSData = @{
-            Tags                     = @('PSModule','wsl', 'linux', 'distro', 'virtualization', 'windows', 'subsystem', 'wsl2')
+            Tags                     = @('PSModule','wsl', 'windows', 'linux', 'virtualization', 'subsystem', 'wsl2')
             ReleaseNotes             = @{ 
                 # '1.2.1' = 'Initial release with New-PHWriter cmdlet for custom help formatting and enhanced layout.'
             }
