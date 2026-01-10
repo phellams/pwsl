@@ -171,12 +171,45 @@ Move-PwslDistro -Name "Debian" -NewLocation "G:\WSL\Debian" -TempLocation "G:\Ba
  - [ ] The ability to list distro versions and perhaps install previous version if the need is there
  - [ ] complete phwriter help metadata for accurate help output
 
-## **Contribute**
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a **Merge Request** (MR) targeting the `develop` branch.
+
+1. **Fork the Project**
+   Click the "Fork" button in the top right corner of the repository page.
+
+2. **Clone your Fork**
+   ```bash
+   git clone [https://gitlab.com/YOUR_USERNAME/pwsl.git](https://gitlab.com/YOUR_USERNAME/pwsl.git)
+   cd pwslmerge_requests/new)
+   ```
+
+3. Create a Feature Branch Ensure you base your work on the develop branch:
+   ```bash
+   git switch develop
+   git switch -c feature/AmazingFeature
+   ```
+
+4. Commit your Changes
+   ```bash
+   git commit -m 'feat: Add some AmazingFeature'
+   ```
+
+5. Push to the Branch
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+
+6. Open a Merge Request
+
+   <a href="https://gitlab.com/phellams/pwsl/-/merge_requests/new"><img src="https://img.shields.io/badge/Open_Merge_Request-GitLab-orange?style=flat-square&logo=gitlab"></a>
+   > https://gitlab.com/phellams/pwsl/-/merge_requests/new
+
 
 ## **Acknowledgments**
 
- - WSL2: [**@wsl**](https://learn.microsoft.com/en-us/windows/wsl/about) - Windows Subsystem for Linux (WSL) lets developers run a GNU/Linux environment inside a Windows environment.
- - Shields\.io: [**@shields.io**](https://shields.io/) - Shields.io provides a service to generate badges and other visual elements for your projects.
+ - [**@wsl**](https://learn.microsoft.com/en-us/windows/wsl/about) - Windows Subsystem for Linux (WSL) lets developers run a GNU/Linux environment inside a Windows environment.
+ - [**@shields.io**](https://shields.io/) - Shields.io provides a service to generate badges and other visual elements for your projects.
 
 ## License
 

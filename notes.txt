@@ -1,0 +1,8 @@
+- ADD: local scope colorpallet to house ASCII Escope codes
+- ADD: New Spinner function to output spinner on time entensive tasks
+- UPDATE: Set Console OutputEncoding to Unicode during execution
+- UPDATE: strict regex capture of (Marker)(Name)(State)(Version)
+- UPDATE: Automatically discard lines that do not match the valid distro pattern
+- UPDATE: Install-PwslDistro with new parameters InstallLocation
+- UPDATE: Install-PwslDistro will call Move-PwslDistro for custom installation location
+- UPDATE: Write-Pwsllog to output color, update functions to reflect
