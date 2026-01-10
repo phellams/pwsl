@@ -7,14 +7,14 @@
     <p>🚨 <strong>Requirement:</strong> Windows 10/11 with WSL enabled.</p>
     <br>
     <span>
-        <a href="https://gitlab.com/phellams/pwsl">Website</a> |
-        <a href="https://gitlab.com/phellams/pwsl#Core Features">Features</a> | 
-        <a href="https://github.com/phellams/pwsl">GitHub</a> |
-        <a href="https://gitlab.com/phellams/pwsl">GitLab</a> |
-        <a href="https://www.powershellgallery.com/packages/PWSL">PSGallery</a> |
-        <a href="https://chocolatey.org/packages/pwsl">Chocolatey</a>
+        <a href="https://gitlab.com/phellams/pwsl#Core Features"><strong>Function Reference</strong></a> ♾️
+        <a href="https://www.powershellgallery.com/packages/PWSL"><strong>PSGallery</strong></a> ♾️
+        <a href="https://chocolatey.org/packages/pwsl"><strong>Chocolatey</strong></a> ♾️
+        <a href="https://github.com/phellams/pwsl"><strong>GitHub</strong></a>
     </span>
-    <hr>
+    <br>
+    <br>
+    <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/misc/hr/hr-style-solution.svg" alt="hr-style-solution" >
 </div>
 
 ## **Installation**
