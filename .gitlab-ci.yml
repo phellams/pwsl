@@ -285,6 +285,19 @@ upload_gitlab_package:
 #   script:
 #     - ./automator-devops/scripts/deploy-proget.ps1
 
+upload_psgallery:
+  <<: *deploy_template
+  needs:
+   - job: psmpacker_build
+     artifacts: true
+   - job: zip_build
+     artifacts: true
+   - job: gitlab_release
+     artifacts: false
+  script:
+    - |
+      pwsh -c ./automator-devops/scripts/deploy/deploy-psgallary.ps1 || exit 1
+
 upload_chocolatey:
   <<: *deploy_template
   image: docker.io/chocolatey/choco:v2.5.1
@@ -294,6 +307,8 @@ upload_chocolatey:
     - job: mono_chocolatey_package
       artifacts: true
     - job: gitlab_release
+      artifacts: false
+    - job: upload_psgallery
       artifacts: false
   tags:
     - docker
@@ -308,15 +323,3 @@ upload_chocolatey:
       chmod +x ./automator-devops/scripts/deploy/deploy-choco.sh || exit 1
       ./automator-devops/scripts/deploy/deploy-choco.sh || exit 1
       
-upload_psgallery:
-  <<: *deploy_template
-  needs:
-   - job: zip_build
-     artifacts: true
-   - job: psmpacker_build
-     artifacts: true
-   - job: gitlab_release
-     artifacts: false
-  script:
-    - |
-      pwsh -c ./automator-devops/scripts/deploy/deploy-psgallary.ps1 || exit 1
