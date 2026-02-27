@@ -1,20 +1,10 @@
-<#
-.SYNOPSIS
-    PWSL - A PowerShell wrapper for managing WSL distributions.
-.DESCRIPTION
-    Provides a PowerShell-native experience for listing, installing, moving, 
-    and managing WSL distributions using standard WSL.exe commands.
-#>
-
 using module libs\phwriter\phwriter.psm1
 
 # -----------------------------------------------------------------------------
 # GLOBALS
 # -----------------------------------------------------------------------------
 
-$global:__pwsl = @{
-    rootpath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
-}
+$global:__pwsl = @{ rootpath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition }
 # -----------------------------------------------------------------------------
 # INTERNAL HELPER: ANSI Logging
 # -----------------------------------------------------------------------------
@@ -30,6 +20,7 @@ $script:colorpallet = @{
     Gray   = "$([char]27)[90m"
     underline = "$([char]27)[4m"
 }
+
 function New-Spinner {
     <#
     .SYNOPSIS

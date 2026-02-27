@@ -7,15 +7,21 @@
     <p>🚨 <strong>Requirement:</strong> Windows 10/11 with WSL enabled.</p>
     <br>
     <span>
-        <a href="https://gitlab.com/phellams/pwsl#Core Features"><strong>Function Reference</strong></a> ♾️
+        <a href="https://gitlab.com/phellams/pwsl#Core Features"><strong>Core Features</strong></a> ♾️
         <a href="https://www.powershellgallery.com/packages/PWSL"><strong>PSGallery</strong></a> ♾️
         <a href="https://chocolatey.org/packages/pwsl"><strong>Chocolatey</strong></a> ♾️
         <a href="https://github.com/phellams/pwsl"><strong>GitHub</strong></a>
     </span>
     <br>
     <br>
-    <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/misc/hr/hr-style-solution.svg" alt="hr-style-solution" >
+
+   [![gitlab-license](https://img.shields.io/gitlab/license/phellams/pwsl?style=for-the-badge&logo=gitlab&labelColor=sienna4&color=%23ffaf5f&logoColor=%23ffd7af)](https://gitlab.com/phellams) [![gitlab-pipeline](https://img.shields.io/gitlab/pipeline-status/phellams/pwsl?style=for-the-badge&logo=gitlab&labelColor=sienna4&color=%23ffaf5f&logoColor=%23ffd7af)](https://gitlab.com/phellams) [![gitlab-issues](https://img.shields.io/gitlab/issues/open/phellams/pwsl?style=for-the-badge&logo=gitlab&labelColor=sienna4&color=%23ffaf5f&logoColor=%23ffd7af)](https://gitlab.com/phellams)
+
+   <img src="https://raw.githubusercontent.com/phellams/phellams-general-resources/main/misc/hr/hr-style-pencel-gradient-blue.svg" alt="hr-style-pencel-gradient-blue.svg" ><br>
+
+
 </div>
+
 
 ## **Installation**
 
