@@ -23,7 +23,8 @@
         ],
         "modulefolders": [
             "cmdlets",
-            "libs"
+            "libs",
+            "tools"
         ],
         "moduleexclude": [
             "commit-helper.ps1"
