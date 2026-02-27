@@ -33,6 +33,7 @@
             ProjectUri               = 'https://gitlab.com/phellams/pwsl.git'
             IconUri                  = 'https://raw.githubusercontent.com/phellams/phellams-general-resources/main/logos/pwsl/dist/png/pwsl-128x128.png'
             # CHOCOLATE ---------------------
+            chocoTitle                = 'pwsl - WSL Management Utility'
             ChocoDescription         = 'A wrapper for `wsl.exe`. It parses WSL output into standard PowerShell objects, provides safety checks for destructive operations, and automates the migration of distributions between drives.'
             LicenseUrl               = 'https://choosealicense.com/licenses/mit'
             ProjectUrl               = 'https://gitlab.com/phellams/pwsl'
