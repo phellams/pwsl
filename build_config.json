@@ -27,7 +27,8 @@
             "tools"
         ],
         "moduleexclude": [
-            "commit-helper.ps1"
+            "commit-helper.ps1",
+            "helpwriter_test_params.ps1"
         ]
     }
 }
