@@ -7,7 +7,7 @@
     <p>🚨 <strong>Requirement:</strong> Windows 10/11 with WSL enabled.</p>
     <br>
     <span>
-        <a href="https://gitlab.com/phellams/pwsl#Core Features"><strong>Function Reference</strong></a> ♾️
+        <a href="https://gitlab.com/phellams/pwsl#Core Features"><strong>Core Features</strong></a> ♾️
         <a href="https://www.powershellgallery.com/packages/PWSL"><strong>PSGallery</strong></a> ♾️
         <a href="https://chocolatey.org/packages/pwsl"><strong>Chocolatey</strong></a> ♾️
         <a href="https://github.com/phellams/pwsl"><strong>GitHub</strong></a>
