@@ -1,6 +1,6 @@
 @{
     RootModule         = 'pwsl.psm1'
-    ModuleVersion      = '0.2.7'
+    ModuleVersion      = '0.2.8'
     GUID               = '019b7754-6848-7a25-a4b3-2d847a419841'
     Author             = 'Garvey k. Snow'
     CompanyName        = 'Phellams'
